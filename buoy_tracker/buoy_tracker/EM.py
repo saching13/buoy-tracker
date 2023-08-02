@@ -17,8 +17,8 @@ def writeGMM(Sigma, mu, pi,color):
     np.savez(path,Sigma=Sigma,mu=mu,pi=pi)
 
 
-def readGMM(color):
-    path = 'EMoutput' + color + '.npz'
+def readGMM(dir_path, color):
+    path = dir_path + '/EMoutput' + color + '.npz'
     if os.path.exists(path):
         print("File exists")
         GMM_file=open(path,"r")
@@ -173,13 +173,13 @@ def classify_points(Theta,buoy_colors,K):
 
 
 
-def determineThesholds(Theta,buoy_colors,K,dec_percentage,channels):
+def determineThesholds(dir_path, Theta, buoy_colors, K, dec_percentage, channels):
  # Configure data set
     
     thresh={}
     for color in buoy_colors:
         x = []
-        path = 'data/Threshold_data/' + color
+        path = dir_path + '/data/Threshold_data/' + color
         data = generate_dataset(path,'BGR')
         ch1 = data[channels[color][0],:]
         ch2 = data[channels[color][1],:]

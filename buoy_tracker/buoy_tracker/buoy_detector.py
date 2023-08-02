@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 class BuoyDetector:
-    def __init__(self) -> None:
+    def __init__(self, weights_path, test_path) -> None:
         self.buoy_colors = ['orange','green','yellow']
         self.training_channels={'orange':(1,2),'green':(0,1),'yellow':(1,2)}
 
@@ -12,12 +12,12 @@ class BuoyDetector:
         self.Theta = {}
         
         for color in self.buoy_colors:
-            Sigma, mu, pi = readGMM(color)
+            Sigma, mu, pi = readGMM(weights_path, color)
             self.Theta[color] = {'Sigma':Sigma,'mu':mu,'pi':pi}
 
         train_percent = .6
         self.K = 3
-        self.threshold = determineThesholds(self.Theta, self.buoy_colors, self.K, train_percent, self.training_channels)
+        self.threshold = determineThesholds(test_path, self.Theta, self.buoy_colors, self.K, train_percent, self.training_channels)
         print(self.threshold)
     
     def findContours(self, masked_image, segmented_frames):

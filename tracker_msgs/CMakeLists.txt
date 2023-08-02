@@ -14,6 +14,7 @@ find_package(rosidl_default_generators REQUIRED)
 # find_package(<dependency> REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Tracker.msg"
+  "msg/TrackerArray.msg"
   DEPENDENCIES std_msgs
  )
 
