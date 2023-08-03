@@ -3,8 +3,9 @@
 ## Description
 The goal of the project here is to track the buoys from the video
 
+![alt text](./track_vis.gif)
 
-## requirements
+## Requirements
 - ROS2 Humble
 - numpy
 - imutils
@@ -53,9 +54,10 @@ For detection I am using the pre-trained Gaussian mixture model from [this](http
 ## Additional improvements
 Some of the improvements that I would like to add but left out for now due to being short on time. 
 1. Include the radius in the tracker. 
-2. Improve the lazy loops in the detection algorithm. 
-3. Use the segmented images for training
-4. Use a NN based segmentation algorithm instead of gauss mixture. 
+2. Improve the tracking algorithm
+3. Improve the lazy loops in the detection algorithm. 
+4. Use the segmented images for training
+5. Use a NN based segmentation algorithm instead of gauss mixture. 
 
 ## What was tried and didn't work. 
 - Detection based on thresholding using RGB/BGR/HSV or LAB formats failed.
@@ -63,3 +65,4 @@ Some of the improvements that I would like to add but left out for now due to be
 ## Visualization
 - In the implementation I am doing predict right after update. So that I can showcase where it is expecting the next position would be in the current image. 
 - So In the image green circle shows where the algo is expecting the next position would be. While blue shows the updated position when the last detetion happened. which is 2 or 4 frames behind depending on the settings. 
+
