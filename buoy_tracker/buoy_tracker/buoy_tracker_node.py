@@ -22,7 +22,7 @@ class BuoyTracker(Node):
 
         self.declare_parameter('video_file_path', video_file_path)
         self.declare_parameter('weights_file_path', weights_file_path)
-        self.declare_parameter('detect_freq', 4)
+        self.declare_parameter('detect_freq', 2)
         self.declare_parameter('max_decay_count', 8)
 
         self.tracker_pub = self.create_publisher(TrackerArray, 'tracked_buoy', 10)
@@ -113,12 +113,12 @@ class BuoyTracker(Node):
         self.tracker_pub.publish(msg)
         self.tracker_image_publisher_.publish(ros_image)
         self.frame_count += 1
-        # cv2.imshow('frame', frame)
-        # k = cv2.waitKey(1)
-        # if k == ord('q'):
-        #     self.input_video.release()
-        #     self.destroy_node()
-        #     return
+        cv2.imshow('frame', frame)
+        k = cv2.waitKey(1)
+        if k == ord('q'):
+            self.input_video.release()
+            self.destroy_node()
+            exit(0)
 
 
 def main(args=None):

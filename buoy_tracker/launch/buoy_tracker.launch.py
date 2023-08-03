@@ -15,7 +15,7 @@ def generate_launch_description():
                                           default=video_file_path_str)
     weights_file_path = LaunchConfiguration('weights_file_path',
                                             default=weights_file_path_str)
-    detect_freq = LaunchConfiguration('detect_freq', default=4)
+    detect_freq = LaunchConfiguration('detect_freq', default=2)
     max_decay_count = LaunchConfiguration('max_decay_count', default=8)
 
     # Declare the launch arguments
