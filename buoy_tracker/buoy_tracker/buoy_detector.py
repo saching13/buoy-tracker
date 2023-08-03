@@ -47,7 +47,9 @@ class BuoyDetector:
             count=[]
             if A>500:
                 for color in self.buoy_colors:
-                    buoy_region = segmented_frames[color][int(y-radius):int(y+radius),int(x-radius):int(x+radius),:]
+                    buoy_region = segmented_frames[color][
+                                int(y-radius):int(y+radius),
+                                int(x-radius):int(x+radius),:]
                     grey = cv2.cvtColor(buoy_region, cv2.COLOR_BGR2GRAY)
                     count.append(len(np.nonzero(grey)[0]))
 

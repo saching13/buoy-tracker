@@ -15,7 +15,7 @@ def generate_launch_description():
                                           default=video_file_path_str)
     weights_file_path = LaunchConfiguration('weights_file_path',
                                             default=weights_file_path_str)
-    detect_freq = LaunchConfiguration('detect_freq', default=2)
+    detect_freq = LaunchConfiguration('detect_freq', default=4)
     max_decay_count = LaunchConfiguration('max_decay_count', default=8)
 
     # Declare the launch arguments
@@ -47,18 +47,31 @@ def generate_launch_description():
     )
 
     # Create the node
-    byoy_node = Node(package='buoy_tracker', executable='buoy_tracker_node',
+    buoy_node = Node(package='buoy_tracker',
+                     executable='buoy_tracker_node',
                      output='screen',
-                     parameters=[{'video_file_path': video_file_path},
-                                 {'weights_file_path': weights_file_path},
-                                 {'detect_freq': detect_freq},
-                                 {'max_decay_count': max_decay_count}])
+                     parameters=[{
+                         'video_file_path': video_file_path
+                     }, {
+                         'weights_file_path': weights_file_path
+                     }, {
+                         'detect_freq': detect_freq
+                     }, {
+                         'max_decay_count': max_decay_count
+                     }])
+
+    image_view_node = Node(package='rqt_image_view',
+                           executable='rqt_image_view',
+                           output='screen',
+                           arguments=['/tracked_buoy_image'])
 
     ld = LaunchDescription()
     ld.add_action(declare_video_file_path_cmd)
     ld.add_action(declare_weights_file_path_cmd)
     ld.add_action(declare_detect_freq_cmd)
     ld.add_action(declare_max_decay_count_cmd)
+    ld.add_action(buoy_node)
 
-    ld.add_action(byoy_node)
+    ld.add_action(image_view_node)
+
     return ld

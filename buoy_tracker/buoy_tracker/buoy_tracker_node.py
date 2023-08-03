@@ -113,12 +113,12 @@ class BuoyTracker(Node):
         self.tracker_pub.publish(msg)
         self.tracker_image_publisher_.publish(ros_image)
         self.frame_count += 1
-        cv2.imshow('frame', frame)
-        k = cv2.waitKey(1)
-        if k == ord('q'):
-            self.input_video.release()
-            self.destroy_node()
-            exit(0)
+        # cv2.imshow('frame', frame)
+        # k = cv2.waitKey(1)
+        # if k == ord('q'):
+        #     self.input_video.release()
+        #     self.destroy_node()
+        #     exit(0)
 
 
 def main(args=None):
