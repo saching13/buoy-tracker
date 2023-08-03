@@ -37,7 +37,7 @@ As default config it detets them every alternative frame only and tracks the oth
 Here are some of the configs.
 - `video_file_path` -> path to the video
 - `weights_file_path` -> Path to the weights used for GMM for detection of the buoy
-- `detect_freq` -> used to determine once in how many frames are detected. While rest are tracked. Default is 2. 
+- `detect_freq` -> used to determine once in how many frames are detected. While rest are tracked. Default is 4. 
 - `max_decay_count` -> After how many predictions without detections does the tracker should discard the tracked object. This should be atleast twice the detect_freq
 
 
@@ -59,3 +59,7 @@ Some of the improvements that I would like to add but left out for now due to be
 
 ## What was tried and didn't work. 
 - Detection based on thresholding using RGB/BGR/HSV or LAB formats failed.
+
+## Visualization
+- In the implementation I am doing predict right after update. So that I can showcase where it is expecting the next position would be in the current image. 
+- So In the image green circle shows where the algo is expecting the next position would be. While blue shows the updated position when the last detetion happened. which is 2 or 4 frames behind depending on the settings. 

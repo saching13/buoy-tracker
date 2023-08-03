@@ -22,7 +22,7 @@ class BuoyTracker(Node):
 
         self.declare_parameter('video_file_path', video_file_path)
         self.declare_parameter('weights_file_path', weights_file_path)
-        self.declare_parameter('detect_freq', 2)
+        self.declare_parameter('detect_freq', 4)
         self.declare_parameter('max_decay_count', 8)
 
         self.tracker_pub = self.create_publisher(TrackerArray, 'tracked_buoy', 10)
