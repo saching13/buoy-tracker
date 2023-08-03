@@ -68,12 +68,14 @@ class BuoyTracker(Node):
         
         if self.trackers.id == 0:
             for color in detected_buoys:
+                # if color == 'orange':
                 x, y, radius = detected_buoys[color][0]
                 self.trackers.add_tracker(x, y)
             return
         
         z_list = []
         for color in detected_buoys:
+            # if color == 'orange':
             z_list.extend([item[:2] for item in detected_buoys[color]])
         
         curr_states = self.trackers.update_and_predict(z_list)

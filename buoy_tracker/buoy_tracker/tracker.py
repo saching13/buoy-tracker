@@ -2,9 +2,11 @@ import cv2
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 from scipy.spatial import distance_matrix
+np.set_printoptions(precision=3)
 
 class EKFTracker:
     def __init__(self, x, y, id, max_decay_count) -> None:
+
         dt = 1/40
         self.x = np.array([x, 0, 0, y, 0, 0])
         self.F = np.array([[1, dt, 0.5*dt**2, 0, 0, 0],
@@ -25,7 +27,13 @@ class EKFTracker:
                            [0, 0, 0, 0.05, 0, 0],
                            [0, 0, 0, 0, 0.03, 0],
                            [0, 0, 0, 0, 0, 0.07]])
-    
+        self.Q = np.array([[0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0],
+                           [0, 0, 0, 0, 0, 0]])
+            
         self.Q = np.array([[0.05, 0, 0, 0, 0, 0],
                            [0, 0.03, 0, 0, 0, 0],
                            [0, 0, 0.07, 0, 0, 0],
@@ -34,7 +42,6 @@ class EKFTracker:
                            [0, 0, 0, 0, 0, 0.07]])
         self.R = np.array([[0.02, 0],
                             [0, 0.02]])
-        # self.previous_x = None
         self.id = id
         self.age = 0
         self.max_decay_count = max_decay_count
@@ -51,12 +58,15 @@ class EKFTracker:
     def update(self, z):
         S = self.H @ self.P @ self.H.T + self.R
         K = self.P @ self.H.T @ np.linalg.inv(S)
-
         y = z - self.H @ self.x
-        # print('y is ', y)
-        # print('K is ', K)
+        # print(f'Prior P is -> \n{self.P}')
+        # print(f'H @ P @ H.T is -> \n{S}')
+        # print(f'K is -> \n{K}')
+        # print(f'y is -> \n{y}')
         self.x = self.x + K @ y
         self.P = self.P - K @ self.H @ self.P
+        # print(f'Posterior x is -> \n{self.x}')
+        # print(f'Posterior P is -> \n{self.P}')
         self.age = 0
         return self.x
 
