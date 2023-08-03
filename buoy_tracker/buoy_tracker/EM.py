@@ -4,7 +4,7 @@ import math
 from matplotlib.patches import Ellipse
 import os
 import numpy as np
-from get_data import generate_dataset
+from .get_data import generate_dataset
 
 def writeGMM(Sigma, mu, pi,color):
     path = 'EMoutput' + color + '.npz'

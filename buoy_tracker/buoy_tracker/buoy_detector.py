@@ -1,4 +1,4 @@
-from EM import *
+from .EM import *
 import imutils
 import cv2
 import numpy as np

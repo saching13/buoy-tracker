@@ -1,6 +1,6 @@
 from ament_index_python.packages import get_package_share_directory
-from buoy_detector import BuoyDetector
-from tracker import Trackers
+from .buoy_detector import BuoyDetector
+from .tracker import Trackers
 
 import numpy as np
 import cv2
@@ -43,26 +43,30 @@ class BuoyTracker(Node):
         self.input_video = cv2.VideoCapture(video_file_path)
         self.frame_count = 0
         timer_period = 1/20  # seconds
+        self.get_logger().info(f'Video file path: {video_file_path}', once=True)
+        self.get_logger().info(f'Weights file path: {weights_file_path}', once=True)
+        self.get_logger().info(f'Detect freq: {self.detect_freq}', once=True)
+        self.get_logger().info(f'Max decay count: {self.max_decay_count}', once=True)
 
         self.timer = self.create_timer(timer_period, self.update)
 
     def update(self):
         if not self.input_video.isOpened():
-            print('Video not opened')
+            self.get_logger().info('Video not opened')
             self.input_video.release()
             self.destroy_node()
-            return
-
+            exit(0)
         ret, frame = self.input_video.read()
         if not ret:
-            print('Failed to retrive the frame')
+            self.get_logger().info('Read returned false')
             self.input_video.release()
             self.destroy_node()
-            return
+            exit(0)
         
         if self.frame_count % self.detect_freq == 0:
-            print(f'Frame count: {self.frame_count}')
+            # print(f'Frame count: {self.frame_count}')
             detected_buoys = self.buoy_detector.detect(frame)
+            frame = self.buoy_detector.draw_buoy(frame, detected_buoys)
         else:
             detected_buoys = {}
         
@@ -81,7 +85,6 @@ class BuoyTracker(Node):
         curr_states = self.trackers.update_and_predict(z_list)
 
         frame = self.trackers.draw_trackers(frame)
-        # frame = self.buoy_detector.draw_buoy(frame, detected_buoys)
         
         text = "Green circle is prediction"
         position = (10, 50)
@@ -110,14 +113,19 @@ class BuoyTracker(Node):
         self.tracker_pub.publish(msg)
         self.tracker_image_publisher_.publish(ros_image)
         self.frame_count += 1
-        cv2.imshow('frame', frame)
-        cv2.waitKey(1)
+        # cv2.imshow('frame', frame)
+        # k = cv2.waitKey(1)
+        # if k == ord('q'):
+        #     self.input_video.release()
+        #     self.destroy_node()
+        #     return
 
 
 def main(args=None):
     rclpy.init(args=args)
     buoyTrackerNode = BuoyTracker()
     rclpy.spin(buoyTrackerNode)
+    buoyTrackerNode.get_logger().info('Node shutting down')
     rclpy.shutdown()
 
 

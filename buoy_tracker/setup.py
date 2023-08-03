@@ -17,7 +17,7 @@ for (dirpath, dirnames, filenames) in os.walk('resource'):
 # print(package_data_files)
 # print("---")
 package_data_files.append((shared_package_path, ['package.xml']))
-
+package_data_files.append((shared_package_path, ['launch/buoy_tracker.launch.py']))
 setup(
     name=package_name,
     version='0.0.0',

@@ -19,7 +19,7 @@ class EKFTracker:
         self.H = np.array([[1, 0, 0, 0, 0, 0],
                             [0, 0, 0, 1, 0, 0]])
         self.dt = dt
-        print(f'Shape of x is {self.x.shape}')
+
         self.P = np.eye(self.x.shape[0])
         self.Q = np.array([[0.05, 0, 0, 0, 0, 0],
                            [0, 0.03, 0, 0, 0, 0],
@@ -27,12 +27,12 @@ class EKFTracker:
                            [0, 0, 0, 0.05, 0, 0],
                            [0, 0, 0, 0, 0.03, 0],
                            [0, 0, 0, 0, 0, 0.07]])
-        self.Q = np.array([[0, 0, 0, 0, 0, 0],
-                           [0, 0, 0, 0, 0, 0],
-                           [0, 0, 0, 0, 0, 0],
-                           [0, 0, 0, 0, 0, 0],
-                           [0, 0, 0, 0, 0, 0],
-                           [0, 0, 0, 0, 0, 0]])
+        # self.Q = np.array([[0, 0, 0, 0, 0, 0],
+        #                    [0, 0, 0, 0, 0, 0],
+        #                    [0, 0, 0, 0, 0, 0],
+        #                    [0, 0, 0, 0, 0, 0],
+        #                    [0, 0, 0, 0, 0, 0],
+        #                    [0, 0, 0, 0, 0, 0]])
             
         self.Q = np.array([[0.05, 0, 0, 0, 0, 0],
                            [0, 0.03, 0, 0, 0, 0],
@@ -87,13 +87,8 @@ class Trackers:
 
     def associate_and_update(self, z_list):
         predicted_positions_list = [self.predicted_states[key] for key in sorted(self.predicted_states.keys())]
-        print(f'Size if Z list is {len(z_list)}')
-        print(f'Size of predicted positions list is {len(predicted_positions_list)}')
         cost_matrix = distance_matrix(predicted_positions_list, z_list)
         row_indices, col_indices = linear_sum_assignment(cost_matrix)
-        print(f'cost matrix is \n {cost_matrix}')
-        print(f'row indices are {row_indices}')
-        print(f'col indices are {col_indices}')
         for row, col in zip(row_indices, col_indices):
             tracker_id = sorted(self.predicted_states.keys())[row]
             z = z_list[col]
