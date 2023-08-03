@@ -7,6 +7,10 @@
   <maintainer email="sachin.guruswamy@gmail.com">sachin</maintainer>
   <license>TODO: License declaration</license>
 
+  <depend>tracker_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>rclpy</depend>
+
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
